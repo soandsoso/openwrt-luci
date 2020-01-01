@@ -2799,12 +2799,25 @@ return L.Class.extend({
 		},
 
 		apply: function(checked) {
+			checked = false;
 			this.displayStatus('notice spinning',
 				E('p', _('Starting configuration apply…')));
+				
+			var query = { sid: L.env.sessionid, token: L.env.token };
+				
+			var config_doms = document.getElementsByClassName("cbi-map");
+			if (config_doms.length == 1) {
+				var config_dom = config_doms[0];
+				var config_id = config_dom.id;
+				if (config_id != null) {
+					config_id = config_id.replace("cbi-", "");
+					query = { sid: L.env.sessionid, token: L.env.token, config: config_id }
+				}
+			}
 
 			L.Request.request(L.url('admin/uci', checked ? 'apply_rollback' : 'apply_unchecked'), {
 				method: 'post',
-				query: { sid: L.env.sessionid, token: L.env.token }
+				query: query
 			}).then(function(r) {
 				if (r.status === (checked ? 200 : 204)) {
 					var tok = null; try { tok = r.json(); } catch(e) {}
