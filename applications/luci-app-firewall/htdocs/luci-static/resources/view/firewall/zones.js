@@ -54,6 +54,8 @@ return L.view.extend({
 			p[i].value('DROP', _('drop'));
 			p[i].value('ACCEPT', _('accept'));
 		}
+		
+		o = s.option(form.Flag, 'fullcone', _('Enable FullCone-NAT'));
 
 		/* Netfilter flow offload support */
 
