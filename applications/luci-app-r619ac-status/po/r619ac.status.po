@@ -6,3 +6,6 @@ msgstr "连接正常"
 
 msgid "Connect Error"
 msgstr "连接错误"
+
+msgid "WIFI Temperature"
+msgstr "WIFI 温度"
