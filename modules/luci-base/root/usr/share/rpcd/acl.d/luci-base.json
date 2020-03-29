@@ -39,6 +39,8 @@
 				"/proc/sys/net/netfilter/nf_conntrack_*": [ "read" ],
 				"/proc/mounts": [ "read" ],
 				"/usr/lib/lua/luci/version.lua": [ "read" ],
+				"/sys/class/hwmon/hwmon0/temp1_input": ["read"],
+        "/sys/class/hwmon/hwmon1/temp1_input": ["read"],
 				"/bin/dmesg -r": [ "exec" ],
 				"/bin/ping *": [ "exec" ],
 				"/bin/ping6 *": [ "exec" ],
