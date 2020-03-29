@@ -1,0 +1,20 @@
+{
+  "luci-app-r619ac-status": {
+    "description": "Modify the summary of luci for r619ac route",
+    "read": {
+      "ubus": {
+        "luci.r619ac.status": [
+          "info"
+        ]
+      },
+      "file": {
+        "/sys/class/hwmon/hwmon0/temp1_input": [
+          "read"
+        ],
+        "/sys/class/hwmon/hwmon1/temp1_input": [
+          "read"
+        ]
+      }
+    }
+  }
+}

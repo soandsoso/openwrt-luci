@@ -1,0 +1,8 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Connect OK"
+msgstr "连接正常"
+
+msgid "Connect Error"
+msgstr "连接错误"
