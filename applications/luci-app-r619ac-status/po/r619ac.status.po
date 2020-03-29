@@ -1,11 +1,7 @@
-msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8\n"
-
+#: applications/luci-app-r619ac-status/htdocs/luci-static/resources/view/status/include/11_r619ac_status.js:17
 msgid "Connect OK"
 msgstr "连接正常"
 
+#: applications/luci-app-r619ac-status/htdocs/luci-static/resources/view/status/include/11_r619ac_status.js:17
 msgid "Connect Error"
 msgstr "连接错误"
-
-msgid "WIFI Temperature"
-msgstr "WIFI 温度"
