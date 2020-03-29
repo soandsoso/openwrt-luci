@@ -19,14 +19,18 @@ return L.Class.extend({
 		return Promise.all([
 			L.resolveDefault(callSystemBoard(), {}),
 			L.resolveDefault(callSystemInfo(), {}),
-			fs.lines('/usr/lib/lua/luci/version.lua')
+			fs.lines('/usr/lib/lua/luci/version.lua'),
+			L.resolveDefault(fs.trimmed('/sys/class/hwmon/hwmon0/temp1_input'), 0),
+			L.resolveDefault(fs.trimmed('/sys/class/hwmon/hwmon1/temp1_input'), 0)
 		]);
 	},
 
 	render: function(data) {
 		var boardinfo   = data[0],
 		    systeminfo  = data[1],
-		    luciversion = data[2];
+				luciversion = data[2],
+				wifi0 = Math.floor(data[3] / 1000),
+				wifi1 = Math.floor(data[4] / 1000);
 
 		luciversion = luciversion.filter(function(l) {
 			return l.match(/^\s*(luciname|luciversion)\s*=/);
@@ -49,20 +53,24 @@ return L.Class.extend({
 			);
 		}
 
+		var versionL = L.isObject(boardinfo.release) ? boardinfo.release.description + ' ' + boardinfo.release.revision : '';
+		var versionR = ' / Linux ' + boardinfo.kernel;
+		var updateTime = systeminfo.uptime ? '%t'.format(systeminfo.uptime) : null
+
 		var fields = [
-			_('Hostname'),         boardinfo.hostname,
-			_('Model'),            boardinfo.model,
-			_('Architecture'),     boardinfo.system,
-			_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description + ' / ' : '') + (luciversion || ''),
-			_('Kernel Version'),   boardinfo.kernel,
-			_('Local Time'),       datestr,
-			_('Uptime'),           systeminfo.uptime ? '%t'.format(systeminfo.uptime) : null,
-			_('Load Average'),     Array.isArray(systeminfo.load) ? '%.2f, %.2f, %.2f'.format(
+			_('Hostname'), boardinfo.hostname,
+			_('Architecture'), boardinfo.system,
+			_('Firmware Version'), versionL + versionR,
+			_('Local Time'), datestr + ' [' + updateTime + ']',
+			_('Load Average'), Array.isArray(systeminfo.load) ? '%.2f, %.2f, %.2f'.format(
 				systeminfo.load[0] / 65535.0,
 				systeminfo.load[1] / 65535.0,
 				systeminfo.load[2] / 65535.0
 			) : null
 		];
+		if (wifi0 && wifi1) {
+			fields.push(_('WIFI Temperature'), '2G: ' + wifi0 + '℃ | 5G: ' + wifi1 + '℃')
+		}
 
 		var table = E('div', { 'class': 'table' });
 
